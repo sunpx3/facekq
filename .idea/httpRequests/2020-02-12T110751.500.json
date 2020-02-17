@@ -1,0 +1,7 @@
+{
+  "timestamp": "2020-02-12T03:07:51.290+0000",
+  "status": 500,
+  "error": "Internal Server Error",
+  "message": "nested exception is org.apache.ibatis.binding.BindingException: Parameter 'pageSize' not found. Available parameters are [pageIndex, pageSzie, param1, param2]",
+  "path": "/tongue/findallusers"
+}

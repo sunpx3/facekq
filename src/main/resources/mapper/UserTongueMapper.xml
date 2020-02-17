@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.bucm.mapper.UserTongueMapper">
+    <select id="findUsers"  resultType="cn.edu.bucm.mapper.UserTongue">
+        select * from TONGUE_DEPOSITORY
+    </select>
+
+    <select id="findUsersByIndex" parameterType="java.lang.Integer" resultType="cn.edu.bucm.mapper.UserTongue">
+        SELECT
+        xgh as xgh
+        FROM (SELECT ROWNUM AS rowno, t.*
+        FROM TONGUE_DEPOSITORY t
+        WHERE
+
+        <choose>
+            <when test="xgh != null and xgh != ''">
+                t.xgh like '%${xgh}%'
+            </when>
+            <otherwise>
+                1=1
+            </otherwise>
+        </choose>
+        AND ROWNUM &lt;= #{endNums}) table_alias
+        WHERE table_alias.rowno &gt; #{beginNums}
+    </select>
+
+    <select id="findUserByXgh" parameterType="java.lang.String" resultType="cn.edu.bucm.mapper.UserTongue">
+        select * from tongue_depository where  xgh=#{xgh}
+    </select>
+
+    <select id="count" resultType="int">
+        select count(1) from TONGUE_DEPOSITORY t
+        WHERE
+        <choose>
+            <when test="xgh != null and xgh != ''">
+                t.xgh like '%${xgh}%'
+            </when>
+            <otherwise>
+                1=1
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="insertUsers" parameterType="cn.edu.bucm.mapper.UserTongue">
+        insert into tongue_depository(xgh,tzm) values(#{newuser.xgh}, #{newuser.tzm,jdbcType=BLOB})
+    </insert>
+
+    <insert id="updateUsers" parameterType="cn.edu.bucm.mapper.UserTongue">
+        update tongue_depository set tzm=#{newuser.tzm,jdbcType=BLOB} where xgh=(#{newuser.xgh})
+    </insert>
+</mapper>

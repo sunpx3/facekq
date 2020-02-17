@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.bucm.mapper.UserAccountMapper">
+    <select id="findUsersAccount"  resultType="cn.edu.bucm.mapper.UserAccount">
+        select * from USER_ACCOUNT
+    </select>
+
+    <select id="findUserAccountByXgh"  parameterType="java.lang.String"  resultType="cn.edu.bucm.mapper.UserAccount">
+        SELECT * FROM USER_ACCOUNT  WHERE xgh= #{xgh}
+    </select>
+
+
+    <select id="count" resultType="int">
+        select count(*) from USER_ACCOUNT t
+    </select>
+
+    <insert id="insertUsersAccount" parameterType="cn.edu.bucm.mapper.UserAccount">
+        insert into USER_ACCOUNT(xgh,password) values(#{userAccount.xgh}, #{userAccount.tzm})
+    </insert>
+
+    <insert id="updateUsersAccount" parameterType="cn.edu.bucm.mapper.UserAccount">
+        update USER_ACCOUNT set password=#{userAccount.password} where xgh=(#{userAccount.xgh})
+    </insert>
+</mapper>
