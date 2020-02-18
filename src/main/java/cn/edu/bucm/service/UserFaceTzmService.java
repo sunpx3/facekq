@@ -1,10 +1,11 @@
 package cn.edu.bucm.service;
 
-import cn.edu.bucm.entity.TongueTzm;
+
+import cn.edu.bucm.mapper.UserFaceTzm;
 
 import java.io.File;
 
-public interface FaceService {
+public interface UserFaceTzmService {
 
     // 生成照片特征码
     public String getPersonFeatureByImgFile(File file) throws Exception;
@@ -16,9 +17,9 @@ public interface FaceService {
     public String getRemotePersonFeatureByXgh(String xgh);
 
     // 保存特征码
-    public void  savePersonImgFeature(TongueTzm tongueTzm);
+    public void  savePersonImgFeature(UserFaceTzm userFaceTzm);
 
-    public void  updatePersonImgFeature(TongueTzm tongueTzm);
+    public void  updatePersonImgFeature(UserFaceTzm userFaceTzm);
 
 
 

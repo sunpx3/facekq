@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 @Mapper
-public interface UserTongueMapper {
+public interface UserFaceMapper {
     public List<UserFace> findUsers();
     public List<UserFace> findUsersByIndex(@Param("beginNums") int beginNums, @Param("endNums") int endNums, @Param("xgh") String xgh);
     public UserFace findUserByXgh(@Param("xgh") String xgh);

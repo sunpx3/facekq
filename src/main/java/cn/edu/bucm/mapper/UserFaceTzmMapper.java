@@ -1,13 +1,16 @@
 package cn.edu.bucm.mapper;
 
+import cn.edu.bucm.entity.TongueTzm;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
-
+@Mapper
 public interface UserFaceTzmMapper {
 
-    public List<UserFaceTzm> findUsersTzm();
-    public UserFaceTzm findUsersTzmByXgh(@Param("xgh") String xgh);
-    public void insertUsersTzm(@Param("newuser") UserFaceTzm UserFaceTzm);
-    public void updateUsersTzm(@Param("olduser") UserFaceTzm UserFaceTzm);
+    public int selectImgFeature(@Param("xgh") String xgh);
+
+    public void insertImgFeature(@Param("UserFaceTzm") UserFaceTzm userFaceTzm);
+
+    public void updateImgFeature(@Param("UserFaceTzm") UserFaceTzm userFaceTzm);
+
 }

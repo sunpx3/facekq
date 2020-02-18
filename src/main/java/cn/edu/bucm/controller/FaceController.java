@@ -3,7 +3,8 @@ package cn.edu.bucm.controller;
 import cn.edu.bucm.entity.TongueTzm;
 import cn.edu.bucm.mapper.UserAccount;
 import cn.edu.bucm.mapper.UserFace;
-import cn.edu.bucm.service.FaceService;
+import cn.edu.bucm.mapper.UserFaceTzm;
+import cn.edu.bucm.service.UserFaceTzmService;
 import cn.edu.bucm.service.UserAccountService;
 import cn.edu.bucm.service.UserFaceService;
 import cn.edu.bucm.utils.FileUtils;
@@ -38,7 +39,7 @@ public class FaceController {
     private UserAccountService userAccountService;
 
     @Autowired
-    private FaceService faceService;
+    private UserFaceTzmService userFaceTzmService;
 
     @Resource
     private RedisUtil redisUtil;
@@ -132,9 +133,12 @@ public class FaceController {
         // 生成照片特征码
         try {
             File imgFile = FileUtils.multipartFileToFile(multipartFile);
-            String imgFeature = faceService.getPersonFeatureByImgFile(imgFile);
+            String imgFeature = userFaceTzmService.getPersonFeatureByImgFile(imgFile);
 
-            faceService.savePersonImgFeature(new TongueTzm(persname, imgFeature));
+            UserFaceTzm userFaceTzm=new UserFaceTzm();
+            userFaceTzm.setXgh(persname);
+            userFaceTzm.setTzm(imgFeature);
+            userFaceTzmService.savePersonImgFeature(userFaceTzm);
 
         } catch (Exception e) {
             log.error(e.getMessage() + "|" + "生成照片特征码失败，请检查!");
