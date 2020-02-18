@@ -1,27 +1,29 @@
 package cn.edu.bucm.controller;
 
+import cn.edu.bucm.entity.TongueTzm;
 import cn.edu.bucm.mapper.UserAccount;
 import cn.edu.bucm.mapper.UserFace;
+import cn.edu.bucm.service.FaceService;
 import cn.edu.bucm.service.UserAccountService;
 import cn.edu.bucm.service.UserFaceService;
+import cn.edu.bucm.utils.FileUtils;
 import cn.edu.bucm.utils.LdapCheck;
 import cn.edu.bucm.utils.RedisUtil;
 import com.alibaba.fastjson.JSONObject;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Base64;
 import java.util.*;
 
 @Controller
@@ -35,8 +37,15 @@ public class FaceController {
     @Autowired
     private UserAccountService userAccountService;
 
+    @Autowired
+    private FaceService faceService;
+
     @Resource
     private RedisUtil redisUtil;
+
+
+    private static final Logger log = LoggerFactory.getLogger(FaceController.class);
+
 
     @RequestMapping(value = "/finduser", method = RequestMethod.GET)
     @ResponseBody
@@ -118,6 +127,19 @@ public class FaceController {
 
         String persname = personName;
         MultipartFile multipartfile = multipartFile;
+
+
+        // …˙≥…’’∆¨Ãÿ’˜¬Î
+        try {
+            File imgFile = FileUtils.multipartFileToFile(multipartFile);
+            String imgFeature = faceService.getPersonFeatureByImgFile(imgFile);
+
+            faceService.savePersonImgFeature(new TongueTzm(persname, imgFeature));
+
+        } catch (Exception e) {
+            log.error(e.getMessage() + "|" + "…˙≥…’’∆¨Ãÿ’˜¬Î ß∞‹£¨«ÎºÏ≤È!");
+        }
+
 
         boolean stat = false;
         JSONObject resMap = new JSONObject();
@@ -253,6 +275,16 @@ public class FaceController {
 
         return resMap;
 
+    }
+
+
+
+    @GetMapping("/getOndutyPersonInfo")
+    @ResponseBody
+    public JSONObject getOndutyPersonInfo(@RequestParam("xgh") String xgh){
+
+
+        return null;
     }
 
 

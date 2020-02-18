@@ -82,6 +82,7 @@ public class Contants {
     public static final String DELETE_PERSON_API = OPNEXT_SERVER_HOST + "/bbox-service/api/person/delete";
     public static final String GET_ACCESSRECORD_API = OPNEXT_SERVER_HOST + "/bbox-service/api/access-record";
     //:31801
+    public static final String FACE_OPEN_FEATURE = OPNEXT_SERVER_HOST + "/o-algorithm/api/open/feature";
     public static final String FACE_FEATURE_API = OPNEXT_SERVER_HOST + "/o-algorithm/api/open/feature";
     public static final String FACE_FEATURE_COMPARE_API = OPNEXT_SERVER_HOST + "/o-algorithm/api/open/feature-match";
     public static final String  SN_DEVICE=OPNEXT_SERVER_HOST +"/bbox-service/api/device/page";

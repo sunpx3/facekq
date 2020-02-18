@@ -1176,24 +1176,6 @@ public class VisitSAASAuthorize {
             return orgid;
         }
 
-/*
-    public  static JSONObject TestP(String idcard,String idpic,String username,String expiredate,String biztype,String scpic,String nation,String address) throws  Exception{
-        JSONObject jsonObject=new JSONObject ();
-        //  System.out.println(orgjson);
-
-        MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
-
-        RequestBody body = FormBody.create(mediaType, "idcard="+idcard+"&username="+username+"&biztype=1&scpic="+scpic+"&idpic="+idpic+"&nation="+nation+"&address="+address+"&expiredate="+expiredate+"&undefined=");
-        Request request = new Request.Builder()
-                .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                .url("http://183.6.174.107:9080/psgcheck/CheckByIDCard")
-                .post(body)
-                .build();
-        JSONObject addRuleResponse = JSONObject.parseObject(okHttpClient.newCall(request)
-                .execute().body().string());
-        return addRuleResponse;
-    }*/
-
     // 查询照片特征
     public static String  faceTest(String accessToken,File file, Integer tenantId) throws Exception {
 
@@ -1208,7 +1190,7 @@ public class VisitSAASAuthorize {
                 .addHeader("Authorization", "Bearer " + accessToken)
                 .addHeader("tenantId", String.valueOf(tenantId))
                 .addHeader("appId", Contants.APP_ID)
-                .url("https://10.64.2.203" + "/o-algorithm/api/open/feature")
+                .url(Contants.FACE_OPEN_FEATURE)
                 .post(requestBody)
                 .build();
         String result =  okHttpClient.newCall(request).execute().body().string();
@@ -1219,7 +1201,7 @@ public class VisitSAASAuthorize {
 
 
     // 返回照片特征信息
-    public String getFeature(String responseStr){
+    public static String getFeature(String responseStr){
         JSONObject json = JSONObject.parseObject(responseStr);
         return json.getJSONArray("entity")
                 .getJSONObject(0)

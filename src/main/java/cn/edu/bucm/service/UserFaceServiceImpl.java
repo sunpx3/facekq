@@ -1,9 +1,8 @@
 package cn.edu.bucm.service;
 
-import cn.edu.bucm.mapper.UserFaceMapper;
 import cn.edu.bucm.mapper.UserFace;
+import cn.edu.bucm.mapper.UserTongueMapper;
 import org.springframework.stereotype.Service;
-
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.List;
 public class UserFaceServiceImpl implements UserFaceService {
 
     @Resource
-    private UserFaceMapper userFaceMapper;
+    private UserTongueMapper userFaceMapper;
 
     public UserFace findUserByXgh(String xgh){
         UserFace userFace = userFaceMapper.findUserByXgh(xgh);
