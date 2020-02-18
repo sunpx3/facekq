@@ -1,5 +1,6 @@
 package cn.edu.bucm.face;
 
+import cn.edu.bucm.exceptions.ThePicHasNotFaceException;
 import cn.edu.bucm.face.domain.*;
 import cn.edu.bucm.face.enums.GrandType;
 import cn.edu.bucm.utils.Contants;
@@ -1201,12 +1202,17 @@ public class VisitSAASAuthorize {
 
 
     // 返回照片特征信息
-    public static String getFeature(String responseStr){
+    public static String getFeature(String responseStr) throws ThePicHasNotFaceException {
         JSONObject json = JSONObject.parseObject(responseStr);
-        return json.getJSONArray("entity")
-                .getJSONObject(0)
-                .getJSONObject("faceFeature")
-                .getString("feature");
+        JSONObject entity = json.getJSONArray("entity").getJSONObject(0);
+
+        if(entity.getBoolean("hasFace")){
+            return   entity.getJSONObject("faceFeature")
+                    .getString("feature");
+        }else{
+            throw new ThePicHasNotFaceException("未检测到人脸信息，请确认后再上传!");
+        }
+
     }
 
 
@@ -1224,17 +1230,18 @@ public class VisitSAASAuthorize {
             //Person person = VisitSAASAuthorize.getPersonByNo(token, Integer.parseInt(Contants.TENANT_ID), 0 , 10 , "700200");
             String picPath = "C:\\Users\\Administrator\\Desktop\\pic\\1.jpg";
             int tent_id = 1;
-//            String res = VisitSAASAuthorize.faceTest(token, picPath, tent_id);
-//            String feature1 = visitSAASAuthorize.getFeature(res);
+            String res = VisitSAASAuthorize.faceTest(token, new File(picPath), tent_id);
+            String feature1 = visitSAASAuthorize.getFeature(res);
+
+            String picPath2 = "C:\\Users\\Administrator\\Desktop\\pic\\2.jpg";
+            String res2 = VisitSAASAuthorize.faceTest(token, new File(picPath2), tent_id);
+            String feature2 = visitSAASAuthorize.getFeature(res2);
+
 //
-//            String picPath2 = "C:\\Users\\Administrator\\Desktop\\pic\\2.jpg";
-//            String res2 = VisitSAASAuthorize.faceTest(token, picPath2, tent_id);
-//            String feature2 = visitSAASAuthorize.getFeature(res2);
-//
-//
-//            // 特征对比
-//            String result = VisitSAASAuthorize.faceFeatureCompare(token, feature1, feature2, tent_id);
-//            System.out.println(result);
+            // 特征对比
+            String result = VisitSAASAuthorize.faceFeatureCompare(token, feature1, feature2, tent_id);
+
+            System.out.println(JSONObject.parseObject(result).getString("entity"));
 
 
 

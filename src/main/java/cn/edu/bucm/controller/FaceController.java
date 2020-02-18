@@ -1,13 +1,12 @@
 package cn.edu.bucm.controller;
 
-import cn.edu.bucm.entity.TongueTzm;
+import cn.edu.bucm.exceptions.ThePicHasNotFaceException;
 import cn.edu.bucm.mapper.UserAccount;
 import cn.edu.bucm.mapper.UserFace;
 import cn.edu.bucm.mapper.UserFaceTzm;
-import cn.edu.bucm.service.UserFaceTzmService;
 import cn.edu.bucm.service.UserAccountService;
 import cn.edu.bucm.service.UserFaceService;
-import cn.edu.bucm.utils.FileUtils;
+import cn.edu.bucm.service.UserFaceTzmService;
 import cn.edu.bucm.utils.LdapCheck;
 import cn.edu.bucm.utils.RedisUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -15,10 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -124,16 +125,18 @@ public class FaceController {
     //@RequestMapping(value = "/success",method=RequestMethod.POST)
     @PostMapping("/updateOrAddPersonnelPic")
     @ResponseBody
-    public JSONObject showSuccess(@RequestParam(required = false, value = "persName") String personName, @RequestParam("picBase64") MultipartFile multipartFile, HttpSession session) {
+    public JSONObject showSuccess(@RequestParam(required = false, value = "persName") String personName, @RequestParam("picBase64") MultipartFile multipartFile, HttpSession session, HttpServletRequest request) throws IOException {
 
         String persname = personName;
         MultipartFile multipartfile = multipartFile;
+        InputStream inputStream = multipartfile.getInputStream();
 
 
-        // 生成照片特征码
         try {
-            File imgFile = FileUtils.multipartFileToFile(multipartFile);
-            String imgFeature = userFaceTzmService.getPersonFeatureByImgFile(imgFile);
+            multipartFile.getOriginalFilename();
+            String filePath = request.getSession().getServletContext().getRealPath("/") + String.valueOf(Math.random() * 11)+ ".jpg";
+            multipartFile.transferTo(new File(filePath));
+            String imgFeature = userFaceTzmService.getPersonFeatureByImgFile(new File(filePath));
 
             UserFaceTzm userFaceTzm=new UserFaceTzm();
             userFaceTzm.setXgh(persname);
@@ -141,7 +144,7 @@ public class FaceController {
             userFaceTzmService.savePersonImgFeature(userFaceTzm);
 
         } catch (Exception e) {
-            log.error(e.getMessage() + "|" + "生成照片特征码失败，请检查!");
+            log.error(e.getMessage() + "|" + "生成特征码出错，请检查!");
         }
 
 
@@ -166,7 +169,7 @@ public class FaceController {
 
         UserFace newuser = new UserFace();
         try {
-            InputStream inputStream = multipartfile.getInputStream();
+            inputStream = multipartfile.getInputStream();
             if (inputStream != null && !"undefined".equals(persname)) {
                 byte[] data = new byte[inputStream.available()];
                 inputStream.read(data);
@@ -197,6 +200,48 @@ public class FaceController {
             e.printStackTrace();
         }
         return resMap;
+    }
+
+
+    //@RequestMapping(value = "/success",method=RequestMethod.POST)
+    @PostMapping(value = "/uploadDiffPersonnelPic",  produces = { "application/json;charset=UTF-8" })
+    @ResponseBody
+    public JSONObject uploadDiffPic(@RequestParam("picBase64") MultipartFile multipartFile, HttpServletRequest request) {
+
+
+        JSONObject resultMsg = new JSONObject();
+
+        try {
+
+            String filePath = request.getSession().getServletContext().getRealPath("/")  + String.valueOf(Math.random() * 10) + multipartFile.getOriginalFilename();
+            multipartFile.transferTo(new File(filePath));
+            String feature = userFaceTzmService.getPersonFeatureByImgFile(new File(filePath));
+
+            userFaceTzmService.getUserFaceTzmList().forEach( (UserFaceTzm userFaceTzm) -> {
+                try {
+
+                    if(userFaceTzmService.diffPicFeature(feature, userFaceTzm.getTzm())){
+                        // 比对成功
+                        System.out.println("比对成功:" + userFaceTzm.getXgh());
+                    }
+
+                } catch (Exception e) {
+                    String errorMsg = e.getMessage() + "|" + "特征比对出错，请检查!";
+                    log.error(errorMsg);
+                    resultMsg.put("errorMsg", errorMsg);
+                }
+            });
+
+        }catch (ThePicHasNotFaceException e){
+            log.error(e.getMessage());
+            resultMsg.put("errorMsg", e.getMessage());
+        }
+        catch (Exception e) {
+            resultMsg.put("errorMsg", e.getMessage());
+        }
+
+
+        return resultMsg;
     }
 
     //@RequestMapping(value = "/login",method=RequestMethod.POST)
@@ -287,6 +332,17 @@ public class FaceController {
     @ResponseBody
     public JSONObject getOndutyPersonInfo(@RequestParam("xgh") String xgh){
 
+
+        if(StringUtils.isEmpty(xgh)) {
+
+        }
+        UserFace userFace = userFaceService.findUserByXgh(xgh);
+        // ????β????????????????
+        if(userFace == null){
+
+        }else{
+            //
+        }
 
         return null;
     }

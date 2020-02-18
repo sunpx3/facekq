@@ -6,14 +6,18 @@
         select count(1) from TONGUE_TZM where XGH = #{xgh}
     </select>
 
+    <select id="findAllUserFaceTzmList" resultType="cn.edu.bucm.mapper.UserFaceTzm">
+        select * from TONGUE_TZM
+    </select>
+
     <insert id="insertImgFeature" parameterType="cn.edu.bucm.mapper.UserFaceTzm">
         insert into
             TONGUE_TZM (ID, XGH, TZM)
         values
             (
                 tzm_seq.NEXTVAL,
-                #{tongueTzm.xgh},
-                #{tongueTzm.tzm,jdbcType=CLOB}
+                #{userFaceTzm.xgh},
+                #{userFaceTzm.tzm,jdbcType=CLOB}
             )
     </insert>
 
@@ -21,8 +25,8 @@
         update
             TONGUE_TZM
         set
-            TZM = #{tongueTzm.tzm,jdbcType=CLOB}
+            TZM = #{userFaceTzm.tzm,jdbcType=CLOB}
         where
-            XGH = #{tongueTzm.xgh}
+            XGH = #{userFaceTzm.xgh}
     </update>
 </mapper>

@@ -17,6 +17,8 @@ public class Contants {
     public static final String SECURE_KEY = "bfd2265a67363e8badeb8d4bff110260";
     public static final String TENANT_ID = "1";
 
+    public static final Double DIFF_PICRATENUMS = 85.0;
+
 //图书馆
 /*    private static final String OPNEXT_SERVER_HOST = "http://162.105.180.133";
     public static final String APP_ID = "pkuface";
