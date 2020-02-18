@@ -1,11 +1,6 @@
 package cn.edu.bucm.mapper;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class UserFaceTzm {
-
-
 
     private String xgh;
     private String tzm;
