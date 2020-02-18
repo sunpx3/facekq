@@ -1,13 +1,13 @@
 package cn.edu.bucm.controller;
 
 import cn.edu.bucm.mapper.UserAccount;
-import cn.edu.bucm.mapper.UserTongue;
+import cn.edu.bucm.mapper.UserFace;
 import cn.edu.bucm.service.UserAccountService;
-import cn.edu.bucm.service.UserTongueService;
+import cn.edu.bucm.service.UserFaceService;
+import cn.edu.bucm.utils.LdapCheck;
 import cn.edu.bucm.utils.RedisUtil;
 import com.alibaba.fastjson.JSONObject;
 
-import io.lettuce.core.RedisConnectionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,18 +21,16 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.net.ConnectException;
 import java.util.Base64;
 import java.util.*;
 
 @Controller
-@RequestMapping(value = "/tongue")
+@RequestMapping(value = "/kqface")
 public class FaceController {
 
 
     @Autowired
-    private UserTongueService userTongueService;
+    private UserFaceService userFaceService;
 
     @Autowired
     private UserAccountService userAccountService;
@@ -49,7 +47,7 @@ public class FaceController {
             String base64 = redisUtil.get(xgh);
             imgBytes = Base64.getDecoder().decode(base64);
         }else{
-            UserTongue newuser = userTongueService.findUserByXgh(xgh);
+            UserFace newuser = userFaceService.findUserByXgh(xgh);
             imgBytes = newuser.getTzm();
         }
         OutputStream outputStream = response.getOutputStream();
@@ -66,16 +64,16 @@ public class FaceController {
         JSONObject jsonObject = new JSONObject();
         int beginNums = (pageIndex - 1) * pageSize;
         int endNums = pageIndex * pageSize;
-        List<UserTongue> userTongueList = userTongueService.findUsersByIndex(beginNums, endNums, xgh);
-        int total = userTongueService.count(xgh);
+        List<UserFace> userFaceList = userFaceService.findUsersByIndex(beginNums, endNums, xgh);
+        int total = userFaceService.count(xgh);
         System.out.println(total);
 
-        Iterator iterator = userTongueList.iterator();
+        Iterator iterator = userFaceList.iterator();
         List<String> stringList = new ArrayList<>();
 
         while (iterator.hasNext()) {
-            UserTongue userTongue = (UserTongue) iterator.next();
-            stringList.add(userTongue.getXgh());
+            UserFace userFace = (UserFace) iterator.next();
+            stringList.add(userFace.getXgh());
         }
         jsonObject.put("imgList", stringList);
         jsonObject.put("total", total);
@@ -90,14 +88,14 @@ public class FaceController {
         System.out.println(pageIndex + "..." + pageSize);
         int beginNums = (pageIndex - 1) * pageSize;
         int endNums = pageIndex * pageSize;
-        List<UserTongue> userTongueList = userTongueService.findUsersByIndex(beginNums, endNums, "");
-        int total = userTongueService.count("");
-        Iterator iterator = userTongueList.iterator();
+        List<UserFace> userFaceList = userFaceService.findUsersByIndex(beginNums, endNums, "");
+        int total = userFaceService.count("");
+        Iterator iterator = userFaceList.iterator();
         List<String> stringList = new ArrayList<>();
 
         while (iterator.hasNext()) {
-            UserTongue userTongue = (UserTongue) iterator.next();
-            stringList.add(userTongue.getXgh());
+            UserFace userFace = (UserFace) iterator.next();
+            stringList.add(userFace.getXgh());
         }
 
         JSONObject jsonObject = new JSONObject();
@@ -108,8 +106,8 @@ public class FaceController {
 
     @RequestMapping(value = "/insertuser", method = RequestMethod.POST)
     @ResponseBody
-    public String insertUsers(@RequestParam(value = "newuser") UserTongue newuser) {
-        userTongueService.insertUsers(newuser);
+    public String insertUsers(@RequestParam(value = "newuser") UserFace newuser) {
+        userFaceService.insertUsers(newuser);
         return "susscess";
     }
 
@@ -124,12 +122,12 @@ public class FaceController {
         boolean stat = false;
         JSONObject resMap = new JSONObject();
 
-        List<UserTongue> userTongueList = userTongueService.findUsers();
-        Iterator iterator = userTongueList.iterator();
+        List<UserFace> userFaceList = userFaceService.findUsers();
+        Iterator iterator = userFaceList.iterator();
 
         while (iterator.hasNext()) {
-            UserTongue userTongue = (UserTongue) iterator.next();
-            if (userTongue.getXgh().equalsIgnoreCase(persname)) {
+            UserFace userFace = (UserFace) iterator.next();
+            if (userFace.getXgh().equalsIgnoreCase(persname)) {
                 stat = true;
                 break;
             } else {
@@ -140,7 +138,7 @@ public class FaceController {
 
         //  BASE64Encoder encode=new BASE64Encoder();
 
-        UserTongue newuser = new UserTongue();
+        UserFace newuser = new UserFace();
         try {
             InputStream inputStream = multipartfile.getInputStream();
             if (inputStream != null && !"undefined".equals(persname)) {
@@ -154,12 +152,12 @@ public class FaceController {
                 System.out.println(persname + ":" + !"undefined".equals(persname));
                 newuser.setTzm(data);
                 if (stat) {
-                    userTongueService.updateUsers(newuser);
+                    userFaceService.updateUsers(newuser);
                     resMap.put("persName", persname);
                     resMap.put("status", "success");
                 } else {
                     if (!"undefined".equals(persname)) {
-                        userTongueService.insertUsers(newuser);
+                        userFaceService.insertUsers(newuser);
                         resMap.put("persName", persname);
                         resMap.put("status", "success");
                     } else {
@@ -203,12 +201,56 @@ public class FaceController {
     }
 
 
-    @PostMapping("/casLogin")
+    @PostMapping("/ldapLogin")
     @ResponseBody
-    public JSONObject casLogin() {
-        System.out.println("it is here");
+    public JSONObject casLogin(@RequestBody JSONObject jsonpObject) {
+
+        String baseDN="ou=bks,ou=bucmuser,dc=bucm,dc=edu,dc=cn";
+        String username = jsonpObject.getString("username");
+        String password = jsonpObject.getString("password");
+        System.out.println(username+"+"+password);
+
         JSONObject resMap = new JSONObject();
-        resMap.put("status", "success");
+
+        Map<String, Object> login = LdapCheck.authenticate(baseDN, username, password);
+        boolean result = ((Boolean)login.get("loginResult")).booleanValue();
+        if (!result) {
+            login = LdapCheck.authenticate("ou=sss,ou=bucmuser,dc=bucm,dc=edu,dc=cn", username, password);
+            result = ((Boolean)login.get("loginResult")).booleanValue();
+        } else {
+            result = true;
+        }
+        if (!result) {
+            login = LdapCheck.authenticate("ou=bss,ou=bucmuser,dc=bucm,dc=edu,dc=cn", username, password);
+            result = ((Boolean)login.get("loginResult")).booleanValue();
+        } else {
+            result = true;
+        }
+        if (!result) {
+            login = LdapCheck.authenticate("ou=fsyyzg,ou=bucmuser,dc=bucm,dc=edu,dc=cn", username, password);
+            result = ((Boolean)login.get("loginResult")).booleanValue();
+        } else {
+            result = true;
+        }
+        if (!result) {
+            login = LdapCheck.authenticate("ou=jzg,ou=bucmuser,dc=bucm,dc=edu,dc=cn", username, password);
+            result = ((Boolean)login.get("loginResult")).booleanValue();
+        } else {
+            result = true;
+        }
+        if (!result) {
+            login = LdapCheck.authenticate("ou=ltxzg,ou=bucmuser,dc=bucm,dc=edu,dc=cn", username, password);
+            result = ((Boolean)login.get("loginResult")).booleanValue();
+        } else {
+            result = true;
+        }
+        if (result) {
+            resMap.put("username", username);
+            resMap.put("status", "success");
+        }else{
+            resMap.put("status", "error");
+        }
+
         return resMap;
 
     }

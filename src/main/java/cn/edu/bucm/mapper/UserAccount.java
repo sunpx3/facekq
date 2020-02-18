@@ -1,5 +1,8 @@
 package cn.edu.bucm.mapper;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class UserAccount {
 
     private String xgh;
