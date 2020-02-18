@@ -27,6 +27,8 @@ public class VisitSAASAuthorize {
 
     private static OkHttpClient okHttpClient = UnsafeOkHttpClient.getUnsafeOkHttpClient ();
 
+
+
     private static String token;
 
     public static String basic = "Basic " + Base64.getEncoder().encodeToString((Contants.APP_ID + ":" + Contants.SECURE_KEY).getBytes());
