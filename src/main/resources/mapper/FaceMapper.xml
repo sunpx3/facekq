@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.edu.bucm.mapper.FaceMapper">
+<mapper namespace="cn.edu.bucm.mapper.UserFaceTzmMapper">
 
     <select id="selectImgFeature" parameterType="java.lang.String" resultType="int">
         select count(1) from TONGUE_TZM where XGH = #{xgh}
     </select>
 
-    <insert id="insertImgFeature" parameterType="cn.edu.bucm.entity.TongueTzm">
+    <insert id="insertImgFeature" parameterType="cn.edu.bucm.mapper.UserFaceTzm">
         insert into
             TONGUE_TZM (ID, XGH, TZM)
         values
@@ -17,7 +17,7 @@
             )
     </insert>
 
-    <update id="updateImgFeature" parameterType="cn.edu.bucm.entity.TongueTzm">
+    <update id="updateImgFeature" parameterType="cn.edu.bucm.mapper.UserFaceTzm">
         update
             TONGUE_TZM
         set
