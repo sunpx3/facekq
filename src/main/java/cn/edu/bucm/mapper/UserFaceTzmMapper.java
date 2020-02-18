@@ -1,6 +1,5 @@
 package cn.edu.bucm.mapper;
 
-import cn.edu.bucm.entity.TongueTzm;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
