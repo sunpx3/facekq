@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.bucm.mapper.FaceMapper">
+
+    <select id="selectImgFeature" parameterType="java.lang.String" resultType="int">
+        select count(1) from TONGUE_TZM where XGH = #{xgh}
+    </select>
+
+    <insert id="insertImgFeature" parameterType="cn.edu.bucm.entity.TongueTzm">
+        insert into
+            TONGUE_TZM (ID, XGH, TZM)
+        values
+            (
+                tzm_seq.NEXTVAL,
+                #{tongueTzm.xgh},
+                #{tongueTzm.tzm,jdbcType=CLOB}
+            )
+    </insert>
+
+    <update id="updateImgFeature" parameterType="cn.edu.bucm.entity.TongueTzm">
+        update
+            TONGUE_TZM
+        set
+            TZM = #{tongueTzm.tzm,jdbcType=CLOB}
+        where
+            XGH = #{tongueTzm.xgh}
+    </update>
+</mapper>
