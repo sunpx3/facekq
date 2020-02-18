@@ -17,9 +17,9 @@ import java.util.*;
 
 
 /**
- * 璁块棶saas骞冲彴,閫氳繃鑾峰彇token鎺堟潈鏂瑰紡璁块棶銆傝繖绉嶆柟寮忕渷鐣ョ涓�姝ヨ幏鍙朿ode
+ * 璁块棶saas骞冲彴,閫氳繃鑾峰彇token鎺堟潈鏂瑰紡璁块棶銆傝繖绉嶆柟寮忕渷鐣ョ涓?姝ヨ幏鍙朿ode
  * 鐩存帴鑾峰彇token锛屾嬁鍒皌oken璁块棶瀹堜繚鎶ょ殑璧勬簮
- * token鐨勬湁鏁堟湡涓哄崐涓皬鏃讹紝濡傛灉杩囨湡锛岀敤refresh_token鍦ㄦ璇锋眰/oauth2/token鍗冲彲锛坮efresh_token鐨勬湁鏁堟湡涓�24灏忔椂锛夎鏌ョ湅exchangeToken鏂规硶
+ * token鐨勬湁鏁堟湡涓哄崐涓皬鏃讹紝濡傛灉杩囨湡锛岀敤refresh_token鍦ㄦ璇锋眰/oauth2/token鍗冲彲锛坮efresh_token鐨勬湁鏁堟湡涓?24灏忔椂锛夎鏌ョ湅exchangeToken鏂规硶
  *
  * @author js
  */
@@ -43,7 +43,7 @@ public class VisitSAASAuthorize {
     }
 
     /**
-     * @param authorizationBasic 鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+     * @param authorizationBasic 鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
      * @return Map
      * @throws Exception 鎶涘嚭寮傚父
      */
@@ -85,14 +85,14 @@ public class VisitSAASAuthorize {
      * @param accessToken    token
      * @param tenantId tenantId
      * @param pageNum  椤垫暟
-     * @param pageSize 涓�椤靛灏戞潯
+     * @param pageSize 涓?椤靛灏戞潯
      * @return Page<Person>
      * @throws Exception 鎶涘嚭寮傚父
      */
     @SuppressWarnings({"SameParameterValue", "noinspection unchecked", "ConstantConditions"})
     public static Page<Person> getPerson(String accessToken, int tenantId, int pageNum, int pageSize, String organizationId) throws Exception {
         Request request = new Request.Builder()
-//                璋冪敤鎺ュ彛鎵�闇�瑕佺殑瀹夊叏楠岃瘉
+//                璋冪敤鎺ュ彛鎵?闇?瑕佺殑瀹夊叏楠岃瘉
                 .addHeader("Authorization", "Bearer " + accessToken)
                 .addHeader("tenantId", String.valueOf(tenantId))
                 .url(Contants.RESOURCE_PERSON_API + "?page=" + pageNum + "&size=" + pageSize+ "&organizationId="+organizationId )
@@ -102,7 +102,7 @@ public class VisitSAASAuthorize {
         if (entityResponse.getStatus() == 401){
             accessToken = getToken(basic);
             Request requestReset = new Request.Builder()
-//                璋冪敤鎺ュ彛鎵�闇�瑕佺殑瀹夊叏楠岃瘉
+//                璋冪敤鎺ュ彛鎵?闇?瑕佺殑瀹夊叏楠岃瘉
                     .addHeader("Authorization", "Bearer " + token)
                     .addHeader("tenantId", String.valueOf(tenantId))
                     .url(Contants.RESOURCE_PERSON_API + "?page=" + pageNum + "&size=" + pageSize)
@@ -115,7 +115,7 @@ public class VisitSAASAuthorize {
     public static Person getPersonByNo(String accessToken, int tenantId, int pageNum, int pageSize, String no) throws Exception {
     	
         Request request = new Request.Builder()
-//                璋冪敤鎺ュ彛鎵�闇�瑕佺殑瀹夊叏楠岃瘉
+//                璋冪敤鎺ュ彛鎵?闇?瑕佺殑瀹夊叏楠岃瘉
                 .addHeader("Authorization", "Bearer " + accessToken)
                 .addHeader("tenantId", String.valueOf(tenantId))
                 .url(Contants.RESOURCE_PERSON_API + "?page=" + pageNum + "&size=" + pageSize + "&no=" + no)
@@ -125,7 +125,7 @@ public class VisitSAASAuthorize {
         if (entityResponse.getStatus() == 401){
         	accessToken = getToken(basic);
             Request requestReset = new Request.Builder()
-//                璋冪敤鎺ュ彛鎵�闇�瑕佺殑瀹夊叏楠岃瘉
+//                璋冪敤鎺ュ彛鎵?闇?瑕佺殑瀹夊叏楠岃瘉
                     .addHeader("Authorization", "Bearer " + token)
                     .addHeader("tenantId", String.valueOf(tenantId))
                     .url(Contants.RESOURCE_PERSON_API + "?page=" + pageNum + "&size=" + pageSize + "&no=" + no)
@@ -152,17 +152,17 @@ public class VisitSAASAuthorize {
      */
     @SuppressWarnings("unused")
     private static void cacheToken(String accessToken, String refreshToken) {
-        //灏唗oken缂撳瓨鍒皉edis鎴栬�卻ession涓� 涓嬫鐩存帴鍦ㄧ紦瀛樹腑鍘籺oken
+        //灏唗oken缂撳瓨鍒皉edis鎴栬?卻ession涓? 涓嬫鐩存帴鍦ㄧ紦瀛樹腑鍘籺oken
     }
 
     /**
-     * token澶辨晥 鐢╮efreshToken閲嶆柊鎹㈠彇token 骞惰繘琛岀紦瀛�
+     * token澶辨晥 鐢╮efreshToken閲嶆柊鎹㈠彇token 骞惰繘琛岀紦瀛?
      * 涓嶇敤姣忎竴娆¤闂彈淇濇姢鐨勮祫婧愰兘鍘诲埛鏂皌oken
      *
      * @param refreshToken refreshToken
-     * @param basic        銆�basic
+     * @param basic        銆?basic
      * @return Map
-     * @throws Exception 銆�鎶涘嚭寮傚父
+     * @throws Exception 銆?鎶涘嚭寮傚父
      */
     @SuppressWarnings({"ConstantConditions", "unused"})
     private static Map<String, String> exchangeToken(String refreshToken, String basic) throws Exception {
@@ -172,7 +172,7 @@ public class VisitSAASAuthorize {
                 .add("refresh_token", refreshToken).build();
         Request request = new Request.Builder()
                 .addHeader("Content-Type", Contants.POST_CONTENT_TYPE)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                 .addHeader("Authorization", basic)
                 .url(Contants.AUTH_TOKEN_API)
                 .post(body)
@@ -199,7 +199,7 @@ public class VisitSAASAuthorize {
         RequestBody body = FormBody.create(MediaType.parse(Contants.POST_CONTENT_TYPE_JSON), JSONObject.toJSONString(jsonarray));
         Request request = new Request.Builder()
                 .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                 .addHeader("Authorization", "Bearer " + accessToken)
                 .addHeader("tenantId", String.valueOf(tenantId))
                 .url(Contants.DELETE_PERSON_API)
@@ -211,7 +211,7 @@ public class VisitSAASAuthorize {
         	accessToken = getToken(basic);
             Request requestReset = new Request.Builder()
                     .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                     .addHeader("Authorization", "Bearer " + accessToken)
                     .addHeader("tenantId", String.valueOf(tenantId))
                     .url(Contants.DELETE_PERSON_API)
@@ -306,7 +306,7 @@ public class VisitSAASAuthorize {
       //  RequestBody body = FormBody.create(MediaType.parse(Contants.POST_CONTENT_TYPE_JSON), qryJson);
         Request request = new Request.Builder()
                 .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                 .addHeader("Authorization", "Bearer " + accessToken)
                 .addHeader("tenantId", String.valueOf(tenantId))
               //  .url(Contants.GET_ACCESSRECORD_API+ "?sn=FC231118380001")
@@ -323,7 +323,7 @@ public class VisitSAASAuthorize {
             token = getToken(basic);
             Request requestReset = new Request.Builder()
                     .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                     .addHeader("Authorization", "Bearer " + accessToken)
                     .addHeader("tenantId", String.valueOf(tenantId))
                     //.url(Contants.GET_ACCESSRECORD_API)
@@ -362,7 +362,7 @@ public class VisitSAASAuthorize {
       //  RequestBody body = FormBody.create(MediaType.parse(Contants.POST_CONTENT_TYPE_JSON), qryJson);
         Request request = new Request.Builder()
                 .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                 .addHeader("Authorization", "Bearer " + accessToken)
                 .addHeader("tenantId", String.valueOf(tenantId))
               //  .url(Contants.GET_ACCESSRECORD_API+ "?sn=FC231118380001")
@@ -379,7 +379,7 @@ public class VisitSAASAuthorize {
             token = getToken(basic);
             Request requestReset = new Request.Builder()
                     .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                     .addHeader("Authorization", "Bearer " + accessToken)
                     .addHeader("tenantId", String.valueOf(tenantId))
                     //.url(Contants.GET_ACCESSRECORD_API)
@@ -416,7 +416,7 @@ public class VisitSAASAuthorize {
         //  RequestBody body = FormBody.create(MediaType.parse(Contants.POST_CONTENT_TYPE_JSON), qryJson);
         Request request = new Request.Builder()
                 .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                 .addHeader("Authorization", "Bearer " + accessToken)
                 .addHeader("tenantId", String.valueOf(tenantId))
                 //  .url(Contants.GET_ACCESSRECORD_API+ "?sn=FC231118380001")
@@ -433,7 +433,7 @@ public class VisitSAASAuthorize {
             token = getToken(basic);
             Request requestReset = new Request.Builder()
                     .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                     .addHeader("Authorization", "Bearer " + accessToken)
                     .addHeader("tenantId", String.valueOf(tenantId))
                     //.url(Contants.GET_ACCESSRECORD_API)
@@ -472,7 +472,7 @@ public class VisitSAASAuthorize {
         //  RequestBody body = FormBody.create(MediaType.parse(Contants.POST_CONTENT_TYPE_JSON), qryJson);
         Request request = new Request.Builder()
                 .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                 .addHeader("Authorization", "Bearer " + accessToken)
                 .addHeader("tenantId", String.valueOf(tenantId))
                 //  .url(Contants.GET_ACCESSRECORD_API+ "?sn=FC231118380001")
@@ -489,7 +489,7 @@ public class VisitSAASAuthorize {
             token = getToken(basic);
             Request requestReset = new Request.Builder()
                     .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                     .addHeader("Authorization", "Bearer " + accessToken)
                     .addHeader("tenantId", String.valueOf(tenantId))
                     //.url(Contants.GET_ACCESSRECORD_API)
@@ -568,7 +568,7 @@ public class VisitSAASAuthorize {
         RequestBody body = FormBody.create(MediaType.parse(Contants.POST_CONTENT_TYPE_JSON), personJson);
         Request request = new Request.Builder()
                 .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                 .addHeader("Authorization", "Bearer " + accessToken)
                     .addHeader("tenantId", String.valueOf(tenantId))
                 .url(Contants.SAVE_PERSON_API)
@@ -580,7 +580,7 @@ public class VisitSAASAuthorize {
         	accessToken = getToken(basic);
             Request requestReset = new Request.Builder()
                     .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                     .addHeader("Authorization", "Bearer " + accessToken)
                     .addHeader("tenantId", String.valueOf(tenantId))
                     .url(Contants.SAVE_PERSON_API)
@@ -650,7 +650,7 @@ public class VisitSAASAuthorize {
         RequestBody body = FormBody.create(MediaType.parse(Contants.POST_CONTENT_TYPE_JSON), personJson);
         Request request = new Request.Builder()
                 .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                 .addHeader("Authorization", "Bearer " + accessToken)
                 .addHeader("tenantId", String.valueOf(tenantId))
                 .url(Contants.UPDATE_PERSON_API + person.getId())
@@ -662,7 +662,7 @@ public class VisitSAASAuthorize {
         	accessToken = getToken(basic);
             Request requestReset = new Request.Builder()
                     .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                     .addHeader("Authorization", "Bearer " + token)
                     .addHeader("tenantId", String.valueOf(tenantId))
                     .url(Contants.UPDATE_PERSON_API + person.getId())
@@ -677,7 +677,7 @@ public class VisitSAASAuthorize {
     /**
      * 娣诲姞鍜屼慨鏀逛汉鍛樻椂涓婁紶鐓х墖  2.0老算法
      *
-     * @param uploadUrl   涓婁紶鐨勮矾寰�
+     * @param uploadUrl   涓婁紶鐨勮矾寰?
      * @param file        鐓х墖
      * @param accessToken token
      * @param tenantId    绉熸埛id
@@ -721,7 +721,7 @@ public class VisitSAASAuthorize {
     }
 
     /**
-     * 澧炲姞瑙勫垯骞剁粦瀹氳澶�
+     * 澧炲姞瑙勫垯骞剁粦瀹氳澶?
      *
      * @param accessToken token
      * @param tenantId    绉熸埛id
@@ -735,7 +735,7 @@ public class VisitSAASAuthorize {
         RequestBody body = FormBody.create(MediaType.parse(Contants.POST_CONTENT_TYPE_JSON), JSONObject.toJSONString(setJsonObject(userId)));
         Request request = new Request.Builder()
                 .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                 .addHeader("Authorization", "Bearer " + accessToken)
                 .addHeader("tenantId", String.valueOf(tenantId))
                 .url(Contants.ADD_RULE_API)
@@ -750,7 +750,7 @@ public class VisitSAASAuthorize {
         	accessToken = getToken(basic);
             Request requestReset = new Request.Builder()
                     .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                     .addHeader("Authorization", "Bearer " + token)
                     .addHeader("tenantId", String.valueOf(tenantId))
                     .url(Contants.ADD_RULE_API)
@@ -769,7 +769,7 @@ public class VisitSAASAuthorize {
         RequestBody body = FormBody.create(MediaType.parse(Contants.POST_CONTENT_TYPE_JSON), JSONObject.toJSONString(setTimeRule(userId, startDate, endDate, passMode)));
         Request request = new Request.Builder()
                 .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                 .addHeader("Authorization", "Bearer " + accessToken)
                 .addHeader("tenantId", String.valueOf(tenantId))
                 .url(Contants.ADD_RULE_API)
@@ -782,7 +782,7 @@ public class VisitSAASAuthorize {
             accessToken = getToken(basic);
             Request requestReset = new Request.Builder()
                     .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                     .addHeader("Authorization", "Bearer " + token)
                     .addHeader("tenantId", String.valueOf(tenantId))
                     .url(Contants.ADD_RULE_API)
@@ -883,7 +883,7 @@ public class VisitSAASAuthorize {
         RequestBody body = FormBody.create(MediaType.parse(Contants.POST_CONTENT_TYPE_JSON), JSONObject.toJSONString(jsonArray));
         Request request = new Request.Builder()
                 .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                 .addHeader("Authorization", "Bearer " + accessToken)
                 .addHeader("tenantId", String.valueOf(tenantId))
                 .url(Contants.DEVICE_RULE_ISSUE_API + ruleId)
@@ -896,7 +896,7 @@ public class VisitSAASAuthorize {
         	accessToken = getToken(basic);
             Request requestReset = new Request.Builder()
                     .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                     .addHeader("Authorization", "Bearer " + token)
                     .addHeader("tenantId", String.valueOf(tenantId))
                     .url(Contants.DEVICE_RULE_ISSUE_API + ruleId)
@@ -928,7 +928,7 @@ public class VisitSAASAuthorize {
         RequestBody body = FormBody.create(MediaType.parse(Contants.POST_CONTENT_TYPE_JSON), JSONObject.toJSONString(jsonArray));
         Request request = new Request.Builder()
                 .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                 .addHeader("Authorization", "Bearer " + accessToken)
                 .addHeader("tenantId", String.valueOf(tenantId))
                 .url(Contants.DEVICE_RULE_ISSUE_API + ruleId)
@@ -941,7 +941,7 @@ public class VisitSAASAuthorize {
             accessToken = getToken(basic);
             Request requestReset = new Request.Builder()
                     .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                     .addHeader("Authorization", "Bearer " + token)
                     .addHeader("tenantId", String.valueOf(tenantId))
                     .url(Contants.DEVICE_RULE_ISSUE_API + ruleId)
@@ -965,7 +965,7 @@ public class VisitSAASAuthorize {
         RequestBody body = FormBody.create(MediaType.parse(Contants.POST_CONTENT_TYPE_JSON),orgjson);
         Request request = new Request.Builder()
                 .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                 .addHeader("Authorization", "Bearer " + accessToken)
                 .addHeader("tenantId", String.valueOf(Contants.TENANT_ID))
                 .url(Contants.Org_Save)
@@ -982,7 +982,7 @@ public class VisitSAASAuthorize {
         RequestBody body = FormBody.create(MediaType.parse(Contants.POST_CONTENT_TYPE_JSON),sns);
         Request request = new Request.Builder()
                 .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+//                鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                 .addHeader("Authorization", "Bearer " + accessToken)
                 .addHeader("tenantId", String.valueOf(Contants.TENANT_ID))
                 .url(Contants.Device_Reboot)
@@ -1077,9 +1077,9 @@ public class VisitSAASAuthorize {
 //
 //        EntityResponse updatePersonResponse = updatePerson(token, tenantId, file, (String) jsonObject.get("id"),
 //                (String) jsonObject.get("no"));
-//        System.out.println("淇敼浜哄憳杩斿洖鐨勪俊鎭� =====> " + JSONObject.toJSONString(updatePersonResponse));
+//        System.out.println("淇敼浜哄憳杩斿洖鐨勪俊鎭? =====> " + JSONObject.toJSONString(updatePersonResponse));
 //        EntityResponse addRuleAndIssueDevice = addRuleAndIssueDevice(token, tenantId, (String) jsonObject.get("id"), no);
-//        System.out.println("娣诲姞瑙勫垯骞剁粦瀹氳澶� =====> " + JSONObject.toJSONString(addRuleAndIssueDevice));
+//        System.out.println("娣诲姞瑙勫垯骞剁粦瀹氳澶? =====> " + JSONObject.toJSONString(addRuleAndIssueDevice));
 
      //   494239
         
@@ -1142,7 +1142,7 @@ public class VisitSAASAuthorize {
         RequestBody body = FormBody.create(MediaType.parse(Contants.POST_CONTENT_TYPE_JSON), JSONObject.toJSONString(jo));
         Request request = new Request.Builder()
                 .addHeader("Content-type", Contants.POST_CONTENT_TYPE_JSON)
-////               鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇�
+////               鐢宠鎺堟潈鐨勫畨鍏ㄩ獙璇?
                 .addHeader("Authorization", "Bearer " + accessToken)
                 .addHeader("tenantId", String.valueOf(tenantId))
 //               .addHeader("appId", "pkuface")
@@ -1437,9 +1437,9 @@ public class VisitSAASAuthorize {
 
 
     /**
-     * 灏佽璇锋眰娣诲姞瑙勫垯鐨勫弬鏁�
+     * 灏佽璇锋眰娣诲姞瑙勫垯鐨勫弬鏁?
      * 瑙勫垯鍚嶇О涓嶈兘閲嶅锛岄噸澶嶅垯鎶涘嚭寮傚父 瀛楁锛歯ame
-     * 鍚屼竴瑙勫垯鍐呬笉鑳介噸澶� 瀛楁锛歵itle
+     * 鍚屼竴瑙勫垯鍐呬笉鑳介噸澶? 瀛楁锛歵itle
      *
      * @return JSONObject
      */

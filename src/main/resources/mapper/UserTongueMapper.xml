@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.edu.bucm.mapper.UserTongueMapper">
-    <select id="findUsers"  resultType="cn.edu.bucm.mapper.UserTongue">
+    <select id="findUsers"  resultType="cn.edu.bucm.mapper.UserFace">
         select * from TONGUE_DEPOSITORY
     </select>
 
-    <select id="findUsersByIndex" parameterType="java.lang.Integer" resultType="cn.edu.bucm.mapper.UserTongue">
+    <select id="findUsersByIndex" parameterType="java.lang.Integer" resultType="cn.edu.bucm.mapper.UserFace">
         SELECT
         xgh as xgh
         FROM (SELECT ROWNUM AS rowno, t.*
@@ -24,7 +24,7 @@
         WHERE table_alias.rowno &gt; #{beginNums}
     </select>
 
-    <select id="findUserByXgh" parameterType="java.lang.String" resultType="cn.edu.bucm.mapper.UserTongue">
+    <select id="findUserByXgh" parameterType="java.lang.String" resultType="cn.edu.bucm.mapper.UserFace">
         select * from tongue_depository where  xgh=#{xgh}
     </select>
 
@@ -41,11 +41,11 @@
         </choose>
     </select>
 
-    <insert id="insertUsers" parameterType="cn.edu.bucm.mapper.UserTongue">
+    <insert id="insertUsers" parameterType="cn.edu.bucm.mapper.UserFace">
         insert into tongue_depository(xgh,tzm) values(#{newuser.xgh}, #{newuser.tzm,jdbcType=BLOB})
     </insert>
 
-    <insert id="updateUsers" parameterType="cn.edu.bucm.mapper.UserTongue">
+    <insert id="updateUsers" parameterType="cn.edu.bucm.mapper.UserFace">
         update tongue_depository set tzm=#{newuser.tzm,jdbcType=BLOB} where xgh=(#{newuser.xgh})
     </insert>
 </mapper>
