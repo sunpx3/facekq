@@ -5,8 +5,8 @@
         select * from KQ_INFO
     </select>
 
-    <select id="findkqinfobyxgh"  parameterType="java.lang.String"  resultType="cn.edu.bucm.mapper.KqInfo">
-        SELECT * FROM KQ_INFO  WHERE xgh= #{xgh}
+    <select id="findkqinfobyxgh"   resultType="cn.edu.bucm.mapper.KqInfo">
+        SELECT * FROM KQ_INFO  WHERE xgh= #{xgh} and rq=#{rq,jdbcType=DATE}
     </select>
 
     <select id="count" resultType="int">

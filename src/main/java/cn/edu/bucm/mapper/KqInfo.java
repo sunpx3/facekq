@@ -1,7 +1,10 @@
 package cn.edu.bucm.mapper;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Date;
 
+@Component
 public class KqInfo {
     private String xgh;
     private String xm;

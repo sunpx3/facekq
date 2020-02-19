@@ -1,12 +1,15 @@
 package cn.edu.bucm.controller;
 
 import cn.edu.bucm.exceptions.ThePicHasNotFaceException;
+import cn.edu.bucm.mapper.KqInfo;
 import cn.edu.bucm.mapper.UserAccount;
 import cn.edu.bucm.mapper.UserFace;
 import cn.edu.bucm.mapper.UserFaceTzm;
+import cn.edu.bucm.service.KqInfoServer;
 import cn.edu.bucm.service.UserAccountService;
 import cn.edu.bucm.service.UserFaceService;
 import cn.edu.bucm.service.UserFaceTzmService;
+import cn.edu.bucm.utils.FileUtils;
 import cn.edu.bucm.utils.LdapCheck;
 import cn.edu.bucm.utils.RedisUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -26,6 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -45,6 +49,8 @@ public class FaceController {
     @Resource
     private RedisUtil redisUtil;
 
+    @Autowired
+    private KqInfoServer kqInfoServer;
 
     private static final Logger log = LoggerFactory.getLogger(FaceController.class);
 
@@ -203,30 +209,43 @@ public class FaceController {
     }
 
 
-    //@RequestMapping(value = "/success",method=RequestMethod.POST)
     @PostMapping(value = "/uploadDiffPersonnelPic",  produces = { "application/json;charset=UTF-8" })
     @ResponseBody
     public JSONObject uploadDiffPic(@RequestParam("picBase64") MultipartFile multipartFile, HttpServletRequest request) {
 
 
+
         JSONObject resultMsg = new JSONObject();
-
+        System.out.println("识别开始...");
         try {
-
-            String filePath = request.getSession().getServletContext().getRealPath("/")  + String.valueOf(Math.random() * 10) + multipartFile.getOriginalFilename();
-            multipartFile.transferTo(new File(filePath));
-            String feature = userFaceTzmService.getPersonFeatureByImgFile(new File(filePath));
-
+            //String filePath = request.getSession().getServletContext().getRealPath("/")  + String.valueOf(Math.random() * 10) + multipartFile.getOriginalFilename();
+           // multipartFile.transferTo(new File(filePath));
+            //String feature = userFaceTzmService.getPersonFeatureByImgFile(new File(filePath));
+            File file=FileUtils.multipartFileToFile(multipartFile);
+            String feature = userFaceTzmService.getPersonFeatureByImgFile(file);
             userFaceTzmService.getUserFaceTzmList().forEach( (UserFaceTzm userFaceTzm) -> {
                 try {
-
+                    String zbrgh;
+                    KqInfo kqInfo;
                     if(userFaceTzmService.diffPicFeature(feature, userFaceTzm.getTzm())){
                         // 比对成功
                         System.out.println("比对成功:" + userFaceTzm.getXgh());
+                        zbrgh=userFaceTzm.getXgh();
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+                        Date rq=new Date();
+                        df.format(rq);
+                        kqInfo=kqInfoServer.findkqinfobyxgh(zbrgh,rq);
+                        if(kqInfo.getXgh()!=null) {
+                            System.out.println("今天您值班，能通行！");
+                            resultMsg.put("status", "success");
+                        }else
+                        {
+                            resultMsg.put("status","fail");
+                            System.out.println("今天您不值班，不能通行！");
+                        }
                     }
-
                 } catch (Exception e) {
-                    String errorMsg = e.getMessage() + "|" + "特征比对出错，请检查!";
+                    String errorMsg = e.getMessage() + "|" + "特征比对出错，不是本校人员！";
                     log.error(errorMsg);
                     resultMsg.put("errorMsg", errorMsg);
                 }
